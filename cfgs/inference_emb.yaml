@@ -1,0 +1,8 @@
+batch_size: 1
+workers: 1
+model_name: proclip
+load_model: Trained_model/Proclip_weights.pth
+testdata: examples/human
+split: test
+outfile: examples/human/emb/test/embeddings.h5
+
