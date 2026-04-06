@@ -27,7 +27,7 @@ def main():
     parser.add_argument('--cuda', type=bool, default=True, help='enables cuda')
     parser.add_argument('--batchSize', type=int, default=128, help='input batch size')
     parser.add_argument('--workers', type=int, default=2, help='number of data loading workers')
-    parser.add_argument('-m', '--load_model', default='Trained_model/classifier.pth')
+    parser.add_argument('-m', '--load_model', default='Trained_model/Ensemble_classifiers/PPI_classifier_1.pth')
     parser.add_argument('-f', '--outdata', default='results/interaction_score.csv')
     opt = parser.parse_args()
 
