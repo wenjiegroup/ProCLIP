@@ -9,7 +9,11 @@ python>=3.10
 
 As a prerequisite, you must have PyTorch (>=2.4) installed to use this repository.
 
-The pre-trained weights of the ensemble ProCLIP PPI classifiers are available. The pre-trained weights of the base ProCLIP will be released upon manuscript acceptance.
+The pre-trained weights of ProCLIP PPI classifiers are available. 
+
+The pre-trained weights of the base ProCLIP will be released upon manuscript acceptance.
+
+Benchmark datasets can be downloaded [here](https://zenodo.org/records/19503722).
 
 ```python
 pip install fair-esm bidirectional-cross-attention h5py numpy pandas scikit-learn munch
@@ -33,5 +37,4 @@ To train a new classifier with customized data:
 python train_classifier.py 
 ```
 
-=======
 

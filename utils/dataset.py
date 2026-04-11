@@ -164,7 +164,7 @@ class ScanDataset(data.Dataset):
         complex_name = fpro + '-' + spro
         pro_emb, pro_len = self.get_embed(complex_name)
 
-        return torch.tensor(pro_emb[0]), fpro, spro
+        return torch.tensor(pro_emb[0]), fpro, spro, torch.tensor(np.array(int(float(label))))
 
     def __len__(self):
         return len(self.samples)

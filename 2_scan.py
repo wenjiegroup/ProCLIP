@@ -19,11 +19,29 @@ import pandas as pd
 import datetime
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
+def cal_performance_metrics(gt_label, pre_label, ppi_score):
+    print('Accuracy_score')
+    print(accuracy_score(gt_label, pre_label))
+
+    print('AUC')
+    print(roc_auc_score(gt_label, ppi_score))
+
+    avg = 'macro'
+    f1 = f1_score(gt_label, pre_label, average = avg)
+    print('F1 score')
+    print(f1)
+
+    precision, recall, _ = precision_recall_curve(gt_label, ppi_score, pos_label=1)
+    auprc = auc(recall, precision)
+    print('AUPR')
+    print(auprc)
+
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_dir', default='examples/human', help='path to dataset')
     parser.add_argument('--testsplit', default='test', help='path to dataset')
+    parser.add_argument('--cal_metrics', type=bool, default=False, help='calculate performance metrics')
     parser.add_argument('--cuda', type=bool, default=True, help='enables cuda')
     parser.add_argument('--batchSize', type=int, default=128, help='input batch size')
     parser.add_argument('--workers', type=int, default=2, help='number of data loading workers')
@@ -53,8 +71,9 @@ def main():
         spro_all = []
         prediciton_all = []
         y_score = []
+        label_all = []
         for i, data in enumerate(test_dataloader, 0):
-            features, fpro, spro = data
+            features, fpro, spro, labels = data
             features = features.to(device)
             output = pointcls_net(features, train=False)
             _,predictions = torch.max(output.data, dim = 1)
@@ -62,12 +81,14 @@ def main():
             if (len(fpro_all) == 0):
                 fpro_all = fpro
                 spro_all = spro
+                label_all = labels.detach().cpu().numpy()
                 prediciton_all = predictions.detach().cpu().numpy()
                 y_score = logits[: , 1].detach().cpu().numpy()
             else:
                 fpro_all = np.concatenate((fpro_all, fpro))
                 spro_all = np.concatenate((spro_all, spro))
                 prediciton_all = np.concatenate((prediciton_all, predictions.detach().cpu().numpy()))
+                label_all = np.concatenate((label_all, labels.detach().cpu().numpy()))
                 y_score = np.concatenate((y_score, logits[: , 1].detach().cpu().numpy()))
 
         outdf = pd.DataFrame()
@@ -79,6 +100,9 @@ def main():
 
     current_time = datetime.datetime.now()
     print((current_time - start_time).total_seconds())
+
+    if opt.cal_metrics:
+        cal_performance_metrics(label_all, prediciton_all, y_score)
 
 if __name__ == '__main__':
     main()
