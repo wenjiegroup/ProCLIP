@@ -15,6 +15,12 @@ The pre-trained weights of the base ProCLIP will be released upon manuscript acc
 
 Benchmark datasets can be downloaded [here](https://zenodo.org/records/19503722).
 
+This code has been tested on computers equipped with NVIDIA A800 (80 GB) GPUs.
+
+The installation can be completed within 30 minutes.
+
+A demo run can be completed within 2 minutes.
+
 ```python
 pip install fair-esm bidirectional-cross-attention h5py numpy pandas scikit-learn munch
 ```
